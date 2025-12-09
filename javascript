@@ -136,3 +136,23 @@ function translateText() {
 
     translatedText.textContent = `${languages[lang]}: ${text}`;
 }
+document.getElementById("translateBtn").addEventListener("click", async () => {
+
+    const text = document.getElementById("inputText").value;
+    const lang = document.getElementById("languageSelect").value;
+
+    if (!text) {
+        alert("Please type some text!");
+        return;
+    }
+
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${lang}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        document.getElementById("outputText").value = data.responseData.translatedText;
+    } catch (error) {
+        alert("Translation failed!");
+    }
+});
